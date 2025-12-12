@@ -23,7 +23,7 @@ typedef struct foreach_callback_payload {
 
 extern "C" {
   hashtable* hashtable_create(size_t size, int (*hashf)(void*, int, int));
-  void hashable_destroy(hashtable* ht);
+  void hashtable_destroy(hashtable* ht);
   void* hashtable_put(hashtable* ht, char* key, void* data);
   void* hashtable_put_bin(hashtable* ht, void* key, size_t key_size, void* data);
   void* hashtable_get(hashtable* ht, char* key);
