@@ -15,7 +15,7 @@ void add_entry_count(hashtable* ht, int d) {
 int default_hashf(void* data, size_t data_size, size_t bucket_size) {
   const int R = 31; // small prime
   int h = 0;
-  unsigned char* p = data;
+  unsigned char* p = (unsigned char*)data;
   for (int i = 0; i < data_size; i++) {
     h = (R * h + p[i]) % bucket_size;
   }
@@ -23,22 +23,16 @@ int default_hashf(void* data, size_t data_size, size_t bucket_size) {
 }
 
 hastable* hastable_create(int size, int (*hashf)(void *, int, int)) {
-  if (size < 1) {
-    size = DEFAULT_SIZE;
-  }
-  if (hashf == NULL) {
-    hashf = default_hashf;
-  }
-  hashtable* ht = malloc(sizeof* ht);
+  if (size < 1) size = DEFAULT_SIZE;
+  if (hashf == NULL) hashf = default_hashf;
+  hashtable* ht = (hashtable*)malloc(sizeof(hashtable));
   if (ht == NULL) return NULL;
   ht->size = size;
   ht->num_entries = 0;
   ht->load = 0;
-  ht->bucket = malloc(size * sizeof(struct* llist));
+  ht->bucket = (llist**)malloc(size * sizeof(llist*));
   ht->hashf = hashf;
-  for (int i = 0; i < size; i++) {
-    ht->bucket[i] = llist_create();
-  }
+  for (int i = 0; i < size; i++) ht->bucket[i] = llist_create();
   return ht;
 }
 
@@ -56,7 +50,7 @@ void hashtable_destroy(hashtable *ht) {
   free(ht);
 }
 
-void *hashtable_put(struct hashtable *ht, char *key, void *data) {
+void* hashtable_put(hashtable* ht, char* key, void* data) {
   return hashtable_put_bin(ht, key, strlen(key), data);
 }
 

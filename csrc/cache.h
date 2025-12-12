@@ -17,6 +17,10 @@ typedef struct cache {
   size_t cur_size;
 } cache;
 
+extern "C" {
+  cache* cache_create(size_t max_size, size_t hashsize);
+}
+
 extern cache_entry* alloc_entry(char* path, char* content_type, void* content, int content_length);
 extern void free_entry(cache_entry* entry);
 extern cache* cache_create(size_t max_size, size_t hashsize);
