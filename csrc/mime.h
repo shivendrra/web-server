@@ -1,15 +1,16 @@
-#ifndef __MIME_H__
-#define __MIME_H__
-
-#define TABLE_SIZE 16
+#ifndef _MIME_H_
+#define _MIME_H_
 
 typedef struct {
   char *ext;
   char *mime_type;
 } MimeEntry;
 
+#define TABLE_SIZE 16
+
+extern MimeEntry mime_table[];
+
 extern "C" {
-  MimeEntry mime_table[TABLE_SIZE];
   char* mime_type_get(char *filename);
   char* strlower(char *s);
   unsigned int hash(char *ext);
