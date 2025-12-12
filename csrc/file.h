@@ -9,8 +9,8 @@ typedef struct file_data {
 } file_data;
 
 extern "C" {
-  file_data *file_load(char *filename);
-  void file_free(file_data *file);
+  file_data* file_load(char* filename);
+  void file_free(file_data* file);
 }
 
 #endif
