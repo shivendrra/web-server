@@ -4,6 +4,8 @@
 
 #define DEFAULT_MIME_TYPE "application/octet-stream"
 
+extern char* ensure_mime_table_initialized();
+
 char* strlower(char *s) {
   for (char *p = s; *p != '\0'; p++) *p = tolower(*p);
   return s;
@@ -19,12 +21,14 @@ unsigned int hash(char *ext) {
 }
 
 char* mime_type_get(char *filename) {
+  ensure_mime_table_initialized();
+  
   char *ext = strrchr(filename, '.');
   if (ext == NULL) return (char*)DEFAULT_MIME_TYPE;
   ext++;
   strlower(ext);
   unsigned int index = hash(ext);
-  for (int i = 0; i < TABLE_SIZE; i++) {    // Linear probing for collision resolution
+  for (int i = 0; i < TABLE_SIZE; i++) {
     unsigned int probe_index = (index + i) % TABLE_SIZE;
     if (mime_table[probe_index].ext == NULL) break;
     if (strcmp(mime_table[probe_index].ext, ext) == 0) return mime_table[probe_index].mime_type;
